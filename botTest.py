@@ -4,19 +4,24 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 TOKEN = os.getenv('DISCORD_TOKEN')
-HELLO = os.getenv('HELLO')
+GUILD = os.getenv('DISCORD_GUILD')
 
 print(TOKEN)
-print(HELLO)
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
+guild = client.guilds
 
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
+   
+    for guild in client.guilds:
+        if guild.name == GUILD:
+            break
+
     print(guild.name)
 
 @client.event
