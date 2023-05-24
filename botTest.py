@@ -23,12 +23,20 @@ async def on_ready():
 
     print(guild.name)
 
-@bot.command
-async def rollSix(ctx):
-    response = random.randint(1,6)
-    await ctx.send(response)
+@bot.command(name='roll', help='Rolls a dice')
+async def roll(ctx, numberOfDice: int, numberOfSides: int):
+    dice = [
+        str(random.choice(range(1, numberOfSides + 1)))
+        for _ in range(numberOfDice)
+    ]
+    diceInt = []
+    for i in dice:
+        diceInt.append(int(i))
+    sum = 0
+    for i in diceInt:
+        sum += i
 
-# @client.event
-# async def 
+    await ctx.send(', '.join(dice))
+    await ctx.send(sum)
 
 bot.run(TOKEN)
