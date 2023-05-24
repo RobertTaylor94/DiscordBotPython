@@ -21,10 +21,11 @@ async def on_ready():
    
     guild = discord.utils.get(bot.guilds, name=GUILD)
 
-    print(guild.name)
+    print(f'Server name: {guild.name}')
 
 @bot.command(name='roll', help='Rolls a dice')
 async def roll(ctx, numberOfDice: int, numberOfSides: int):
+    user = ctx.author
     dice = [
         str(random.choice(range(1, numberOfSides + 1)))
         for _ in range(numberOfDice)
@@ -36,7 +37,11 @@ async def roll(ctx, numberOfDice: int, numberOfSides: int):
     for i in diceInt:
         sum += i
 
-    await ctx.send(', '.join(dice))
-    await ctx.send(sum)
+    if user.id == 427116626446516224:
+        await ctx.send(', '.join(dice))
+        await ctx.send(sum)
+    else:
+        print(user.id)
+        await ctx.send('who are you?')
 
 bot.run(TOKEN)
