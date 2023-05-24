@@ -1,35 +1,34 @@
 import os
+import random
 import discord
+from discord.ext import commands
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-print(TOKEN)
-
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
-guild = client.guilds
+bot = commands.Bot(command_prefix='/', intents=intents)
 
-@client.event
+# guild = client.guilds
+
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {bot.user}')
    
-    for guild in client.guilds:
-        if guild.name == GUILD:
-            break
+    guild = discord.utils.get(bot.guilds, name=GUILD)
 
     print(guild.name)
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+@bot.command
+async def rollSix(ctx):
+    response = random.randint(1,6)
+    await ctx.send(response)
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+# @client.event
+# async def 
 
-client.run(TOKEN)
+bot.run(TOKEN)
