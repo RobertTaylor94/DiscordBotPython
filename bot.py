@@ -34,12 +34,12 @@ async def sync(ctx):
         print(e)
 
 @bot.tree.command(name='roll', description="rolls a dice")
-@app_commands.describe(number_of_sides="The number of sides of the dice", d="The number of dice to roll")
-async def roll(interaction: discord.Interaction, number_of_sides: int, d: int):
+@app_commands.describe(number_of_sides="The number of sides of the dice", number_of_dice="The number of dice to roll")
+async def roll(interaction: discord.Interaction, number_of_sides: int, number_of_dice: int):
     user = interaction.user
     dice = [
         str(random.choice(range(1, number_of_sides + 1)))
-        for _ in range(d)
+        for number_of_sides in range(number_of_dice)
     ]
     diceInt = []
     for i in dice:
@@ -67,7 +67,32 @@ async def test(interaction: discord.Interaction):
 
     await interaction.response.send_message("hello", view=view, ephemeral= True)
 
+@bot.tree.command(name="r", description="roll dice")
+async def r(interaction: discord.Interaction, expression: str):
+    array = expression.split("d")
+    num_of_dice = array[0]
+    num_of_sides = array[1]
 
+    if num_of_dice.isdigit() and num_of_sides.isdigit():
+        dice = int(num_of_dice)
+        sides = int(num_of_sides)
+
+        dice_array = []
+
+        for i in range(dice):
+            random_number = random.randint(1, sides)
+            dice_array.append(random_number)
+        
+        print(dice_array)
+
+        sum = 0
+
+        for i in dice_array:
+            sum += i
+
+        embed = discord.Embed(title=f'Roll', type='rich', description=f'{dice_array}\nTotal: {sum}')
+
+        await interaction.response.send_message(f'Murvoth', embed=embed)
 
 
 bot.run(TOKEN)
