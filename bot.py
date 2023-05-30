@@ -69,10 +69,4 @@ async def test(interaction: discord.Interaction):
 
     await interaction.response.send_message("hello", view=view)
 
-@bot.tree.command(name="say")
-@app_commands.describe(arg="What should I say?")
-async def say(interaction: discord.Interaction, arg: str):
-    await interaction.response.send_message(f'{interaction.user.name} said {arg}')
-
-
 bot.run(TOKEN)
