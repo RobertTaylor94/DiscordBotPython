@@ -34,12 +34,12 @@ async def sync(ctx):
         print(e)
 
 @bot.tree.command(name='roll', description="rolls a dice")
-@app_commands.describe(number_of_sides="The number of sides of the dice", number_of_dice="The number of dice to roll")
-async def roll(interaction: discord.Interaction, number_of_dice: int, number_of_sides: int):
+@app_commands.describe(number_of_sides="The number of sides of the dice", d="The number of dice to roll")
+async def roll(interaction: discord.Interaction, number_of_sides: int, d: int):
     user = interaction.user
     dice = [
         str(random.choice(range(1, number_of_sides + 1)))
-        for _ in range(number_of_dice)
+        for _ in range(d)
     ]
     diceInt = []
     for i in dice:
@@ -60,13 +60,14 @@ async def roll(interaction: discord.Interaction, number_of_dice: int, number_of_
 @bot.tree.command(name="test")
 async def test(interaction: discord.Interaction):
     button1 = buttons.attackButton()
-    button2 = discord.ui.Button(style=discord.ButtonStyle.primary, label='Initiative', row=0, custom_id="init")
 
     view = discord.ui.View()
 
     view.add_item(button1)
-    view.add_item(button2)
 
-    await interaction.response.send_message("hello", view=view)
+    await interaction.response.send_message("hello", view=view, ephemeral= True)
+
+
+
 
 bot.run(TOKEN)
