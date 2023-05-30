@@ -2,7 +2,6 @@ import os
 import random
 import discord
 import buttons
-# from discord import ActionRow
 from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv, find_dotenv
@@ -28,17 +27,19 @@ async def on_ready():
 @bot.command(name="sync")
 async def sync(ctx):
     try:
-        synced = await bot.tree.sync()
+        synced = await bot.tree.sync(guild=discord.Object(id=1108491843873804418))
         print(f'synced {len(synced)} command(s)')
+        await ctx.send(f'synced {len(synced)} command(s)')
     except Exception as e:
         print(e)
 
 @bot.tree.command(name='roll', description="rolls a dice")
-async def roll(ctx, number_of_dice: int, number_of_sides: int):
-    user = ctx.author
+@app_commands.describe(number_of_sides="The number of sides of the dice", number_of_dice="The number of dice to roll")
+async def roll(interaction: discord.Interaction, number_of_dice: int, number_of_sides: int):
+    user = interaction.user
     dice = [
-        str(random.choice(range(1, numberOfSides + 1)))
-        for _ in range(numberOfDice)
+        str(random.choice(range(1, number_of_sides + 1)))
+        for _ in range(number_of_dice)
     ]
     diceInt = []
     for i in dice:
@@ -47,15 +48,17 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
     for i in diceInt:
         sum += i
 
+    rolls = ', '.join(dice)
+
     if user.id == 427116626446516224:
-        await ctx.send(', '.join(dice))
-        await ctx.send(sum)
+        await interaction.response.send_message(f'{rolls}\nTotal: {sum}')
+
     else:
         print(user.id)
-        await ctx.send('who are you?')
+        await interaction.response.send_message('who are you?')
 
-@bot.tree.command(name='test')
-async def test(ctx):
+@bot.tree.command(name="test")
+async def test(interaction: discord.Interaction):
     button1 = buttons.attackButton()
     button2 = discord.ui.Button(style=discord.ButtonStyle.primary, label='Initiative', row=0, custom_id="init")
 
@@ -64,6 +67,12 @@ async def test(ctx):
     view.add_item(button1)
     view.add_item(button2)
 
-    await ctx.send("hello", view=view)
+    await interaction.response.send_message("hello", view=view)
+
+@bot.tree.command(name="say")
+@app_commands.describe(arg="What should I say?")
+async def say(interaction: discord.Interaction, arg: str):
+    await interaction.response.send_message(f'{interaction.user.name} said {arg}')
+
 
 bot.run(TOKEN)
