@@ -3,6 +3,7 @@ import random
 import discord
 import buttons
 # from discord import ActionRow
+from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv, find_dotenv
 
@@ -24,10 +25,16 @@ async def on_ready():
 
     print(f'Server name: {guild.name}')
 
-    
+@bot.command(name="sync")
+async def sync(ctx):
+    try:
+        synced = await bot.tree.sync()
+        print(f'synced {len(synced)} command(s)')
+    except Exception as e:
+        print(e)
 
-@bot.command(name='roll', help='Rolls a dice')
-async def roll(ctx, numberOfDice: int, numberOfSides: int):
+@bot.tree.command(name='roll', description="rolls a dice")
+async def roll(ctx, number_of_dice: int, number_of_sides: int):
     user = ctx.author
     dice = [
         str(random.choice(range(1, numberOfSides + 1)))
@@ -47,7 +54,7 @@ async def roll(ctx, numberOfDice: int, numberOfSides: int):
         print(user.id)
         await ctx.send('who are you?')
 
-@bot.command(name='test')
+@bot.tree.command(name='test')
 async def test(ctx):
     button1 = buttons.attackButton()
     button2 = discord.ui.Button(style=discord.ButtonStyle.primary, label='Initiative', row=0, custom_id="init")
@@ -58,9 +65,5 @@ async def test(ctx):
     view.add_item(button2)
 
     await ctx.send("hello", view=view)
-
-@bot.event
-async def on_button_click(interaction):
-    await interaction.respond(content="Button Clicked")
 
 bot.run(TOKEN)
