@@ -40,3 +40,20 @@ class aaronCharge(discord.ui.Button):
         embed = discord.Embed(type='rich', title="Aaron's Charge", description=f'{roll1} + 18\n{total}')
         await interaction.response.send_message(embed=embed)
 
+class bubbleBeardHealing(discord.ui.Button):
+    def __init__(self):
+        super().__init__(style=discord.ButtonStyle.success, label="Bubble Beard Healing")
+
+    async def callback(self, interaction: discord.Interaction):
+        array = []
+        total = 0
+        for i in range(0, 6):
+            roll = int(random.choice(range(1,7)))
+            array.append(roll)
+        
+        for i in array:
+            total += i
+
+        embed = discord.Embed(type='rich', title="Bubble Beard Healing", description=f'{array}\nTotal: {total}')
+        
+        await interaction.response.send_message(embed=embed)
