@@ -2,6 +2,7 @@ import os
 import random
 import discord
 import buttons
+import rolls
 from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv, find_dotenv
@@ -33,30 +34,6 @@ async def sync(ctx):
     except Exception as e:
         print(e)
 
-@bot.tree.command(name='roll', description="rolls a dice")
-@app_commands.describe(number_of_sides="The number of sides of the dice", number_of_dice="The number of dice to roll")
-async def roll(interaction: discord.Interaction, number_of_sides: int, number_of_dice: int):
-    user = interaction.user
-    dice = [
-        str(random.choice(range(1, number_of_sides + 1)))
-        for number_of_sides in range(number_of_dice)
-    ]
-    diceInt = []
-    for i in dice:
-        diceInt.append(int(i))
-    sum = 0
-    for i in diceInt:
-        sum += i
-
-    rolls = ', '.join(dice)
-
-    if user.id == 427116626446516224:
-        await interaction.response.send_message(f'{rolls}\nTotal: {sum}')
-
-    else:
-        print(user.id)
-        await interaction.response.send_message('who are you?')
-
 @bot.tree.command(name="test")
 async def test(interaction: discord.Interaction):
     button1 = buttons.attackButton()
@@ -85,37 +62,12 @@ async def r(interaction: discord.Interaction, expression: str):
         sides = int(split[0])
         bonus = int(split[1])
         dice = int(num_of_dice)
-        dice_array = []
-        sum = 0
-
-        print(sides, dice, bonus)
-
-        for i in range(0, (dice+1)):
-            rand_num = random.randint(1, sides)
-            dice_array.append(rand_num)
-        for i in dice_array:
-            sum += i
-        
-        embed = discord.Embed(type='rich', title=f'{interaction.user.name}', description=f'{dice_array} + {bonus}\nTotal: {sum + bonus}')
+        embed = rolls.roll(sides=sides, dice=dice, bonus=bonus, user=interaction.user.name)
         await interaction.response.send_message(embed=embed)
     else:
         dice = int(num_of_dice)
         sides = int(num_of_sides)
-        dice_array = []
-
-        for i in range(0, (dice+1)):
-            random_number = random.randint(1, sides)
-            dice_array.append(random_number)
-        
-        # print(dice_array)
-
-        sum = 0
-
-        for i in dice_array:
-            sum += i
-
-        embed = discord.Embed(title=f'Roll', type='rich', description=f'{dice_array}\nTotal: {sum}')
-
+        embed = rolls.roll(sides=sides, dice=dice, user=interaction.user.name)
         await interaction.response.send_message(embed=embed)
 
 
