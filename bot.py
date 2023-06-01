@@ -78,17 +78,36 @@ async def r(interaction: discord.Interaction, expression: str):
     num_of_dice = array[0]
     num_of_sides = array[1]
 
-    if num_of_dice.isdigit() and num_of_sides.isdigit():
+    print(num_of_dice, num_of_sides)
+
+    if '+' in num_of_sides:
+        split = num_of_sides.split("+")
+        sides = int(split[0])
+        bonus = int(split[1])
+        dice = int(num_of_dice)
+        dice_array = []
+        sum = 0
+
+        print(sides, dice, bonus)
+
+        for i in range(0, (dice+1)):
+            rand_num = random.randint(1, sides)
+            dice_array.append(rand_num)
+        for i in dice_array:
+            sum += i
+        
+        embed = discord.Embed(type='rich', title=f'{interaction.user.name}', description=f'{dice_array} + {bonus}\nTotal: {sum + bonus}')
+        await interaction.response.send_message(embed=embed)
+    else:
         dice = int(num_of_dice)
         sides = int(num_of_sides)
-
         dice_array = []
 
-        for i in range(dice):
+        for i in range(0, (dice+1)):
             random_number = random.randint(1, sides)
             dice_array.append(random_number)
         
-        print(dice_array)
+        # print(dice_array)
 
         sum = 0
 
@@ -97,7 +116,7 @@ async def r(interaction: discord.Interaction, expression: str):
 
         embed = discord.Embed(title=f'Roll', type='rich', description=f'{dice_array}\nTotal: {sum}')
 
-        await interaction.response.send_message(f'Murvoth', embed=embed)
+        await interaction.response.send_message(embed=embed)
 
 
 bot.run(TOKEN)
