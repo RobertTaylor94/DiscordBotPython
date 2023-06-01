@@ -27,7 +27,7 @@ async def on_ready():
 @bot.command(name="sync")
 async def sync(ctx):
     try:
-        synced = await bot.tree.sync(guild=discord.Object(id=1108491843873804418))
+        synced = await bot.tree.sync()
         print(f'synced {len(synced)} command(s)')
         await ctx.send(f'synced {len(synced)} command(s)')
     except Exception as e:
@@ -60,14 +60,19 @@ async def roll(interaction: discord.Interaction, number_of_sides: int, number_of
 @bot.tree.command(name="test")
 async def test(interaction: discord.Interaction):
     button1 = buttons.attackButton()
+    button2 = buttons.aaronCharge()
+    button3 = buttons.bubbleBeardHealing()
 
     view = discord.ui.View()
 
     view.add_item(button1)
+    view.add_item(button2)
+    view.add_item(button3)
 
-    await interaction.response.send_message("hello", view=view, ephemeral= True)
+    await interaction.response.send_message("hello", view=view)
 
 @bot.tree.command(name="r", description="roll dice")
+@app_commands.describe(expression="expression")
 async def r(interaction: discord.Interaction, expression: str):
     array = expression.split("d")
     num_of_dice = array[0]
