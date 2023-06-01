@@ -30,3 +30,13 @@ class rollDamage(discord.ui.Button):
         else:
             await interaction.response.send_message('Damage be damaging')
 
+class aaronCharge(discord.ui.Button):
+    def __init__(self):
+        super().__init__(style=discord.ButtonStyle.primary, label="Aaron Charge")
+
+    async def callback(self, interaction: discord.Interaction):
+        roll1 = int(random.choice(range(1, 21)))
+        total = str(roll1 + 18)
+        embed = discord.Embed(type='rich', title="Aaron's Charge", description=f'{roll1} + 18\n{total}')
+        await interaction.response.send_message(embed=embed)
+
