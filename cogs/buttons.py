@@ -1,4 +1,3 @@
-from typing import Any
 import random
 from discord.ext import commands
 from discord import app_commands, Interaction, Embed, ButtonStyle
@@ -30,6 +29,7 @@ class d12Button(Button):
     async def callback(self, interaction: Interaction):
         roll = int(random.choice(range(1, 13)))
         embed = Embed(title=f'{interaction.user.name}', description=f'{roll}', type='rich')
+        await interaction.response.send_message(embed=embed)
 
 class d100Button(Button):
     def __init__(self):
@@ -38,6 +38,7 @@ class d100Button(Button):
     async def callback(self, interaction: Interaction):
         roll = int(random.choice(range(1, 101)))
         embed = Embed(title=f'{interaction.user.name}', description=f'{roll}', type='rich')
+        await interaction.response.send_message(embed=embed)
 
 class attackButton(Button):
     def __init__(self):
@@ -65,7 +66,6 @@ class rollDamage(Button):
             total = str(roll1 + roll2 + 5)
             embed = Embed(color=2, title=f'Damage by {interaction.user.name}', description=f'{roll1} + {roll2} + 5 = {total}', type='rich')
             await interaction.response.send_message(embed=embed)
-            # await interaction.response.send_message(view=buttonsView(), ephemeral=True)
         else:
             await interaction.response.send_message('Damage be damaging')
 
@@ -79,7 +79,6 @@ class aaronCharge(Button):
         embed = Embed(type='rich', title="Aaron's Charge", description=f'{roll1} + 18\n{total}')
         view = buttonsView()
         await interaction.response.send_message(embed=embed)
-        await interaction.response.send_message(view=view, ephemeral=True)
 
 class bubbleBeardHealing(Button):
     def __init__(self):
@@ -98,8 +97,6 @@ class bubbleBeardHealing(Button):
         embed = Embed(type='rich', title="Bubble Beard Healing", description=f'{array}\nTotal: {total}')
         view = buttonsView()
         await interaction.response.send_message(embed=embed)
-        await interaction.response.send_message(view=view, ephemeral=True)
-
 
 async def setup(bot):
     await bot.add_cog(buttons(bot))
