@@ -7,8 +7,8 @@ class buttons(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command()
-    async def but(self, interaction: discord.Interaction):
+    @app_commands.command(name='button', description='Display commonly used rolls as buttons')
+    async def button(self, interaction: discord.Interaction):
         print("button command issued")
         button1 = attackButton()
         button2 = aaronCharge()
