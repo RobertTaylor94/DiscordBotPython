@@ -26,20 +26,6 @@ async def main():
     await load()
     await bot.start(TOKEN)
 
-@bot.tree.command(name="test")
-async def test(interaction: discord.Interaction):
-    button1 = buttons.attackButton()
-    button2 = buttons.aaronCharge()
-    button3 = buttons.bubbleBeardHealing()
-
-    view = discord.ui.View()
-
-    view.add_item(button1)
-    view.add_item(button2)
-    view.add_item(button3)
-
-    await interaction.response.send_message("hello", view=view)
-
 @bot.tree.command(name="r", description="roll dice")
 @app_commands.describe(expression="expression")
 async def r(interaction: discord.Interaction, expression: str):

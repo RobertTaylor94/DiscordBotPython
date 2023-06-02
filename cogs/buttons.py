@@ -1,5 +1,24 @@
 import discord
 import random
+from discord.ext import commands
+from discord import app_commands
+
+class buttons(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @app_commands.command()
+    async def but(self, interaction: discord.Interaction):
+        print("button command issued")
+        button1 = attackButton()
+        button2 = aaronCharge()
+        button3 = bubbleBeardHealing()
+        view = discord.ui.View()
+        view.add_item(button1)
+        view.add_item(button2)
+        view.add_item(button3)
+
+        await interaction.response.send_message("hello", view=view)
 
 class attackButton(discord.ui.Button):
     def __init__(self):
@@ -57,3 +76,7 @@ class bubbleBeardHealing(discord.ui.Button):
         embed = discord.Embed(type='rich', title="Bubble Beard Healing", description=f'{array}\nTotal: {total}')
         
         await interaction.response.send_message(embed=embed)
+
+
+async def setup(bot):
+    await bot.add_cog(buttons(bot))
