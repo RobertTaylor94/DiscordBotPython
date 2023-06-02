@@ -26,24 +26,6 @@ async def main():
     await load()
     await bot.start(TOKEN)
 
-
-@bot.event
-async def on_ready():
-    print(f'We have logged in as {bot.user}')
-   
-    guild = discord.utils.get(bot.guilds, name=GUILD)
-
-    print(f'Server name: {guild.name}')
-
-@bot.command(name="sync")
-async def sync(ctx):
-    try:
-        synced = await bot.tree.sync()
-        print(f'synced {len(synced)} command(s)')
-        await ctx.send(f'synced {len(synced)} command(s)')
-    except Exception as e:
-        print(e)
-
 @bot.tree.command(name="test")
 async def test(interaction: discord.Interaction):
     button1 = buttons.attackButton()
