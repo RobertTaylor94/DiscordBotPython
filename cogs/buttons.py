@@ -10,15 +10,15 @@ class buttons(commands.Cog):
     @app_commands.command(name='button', description='Display commonly used rolls as buttons')
     async def button(self, interaction: discord.Interaction):
         print("button command issued")
-        button1 = attackButton()
-        button2 = aaronCharge()
-        button3 = bubbleBeardHealing()
-        view = discord.ui.View()
-        view.add_item(button1)
-        view.add_item(button2)
-        view.add_item(button3)
+        view = buttonsView()
+        await interaction.response.send_message("hello", view=view, ephemeral = True)
 
-        await interaction.response.send_message("hello", view=view)
+class buttonsView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(attackButton())
+        self.add_item(aaronCharge())
+        self.add_item(bubbleBeardHealing())
 
 class attackButton(discord.ui.Button):
     def __init__(self):
