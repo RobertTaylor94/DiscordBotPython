@@ -1,6 +1,5 @@
 import os
 import discord
-import rolls
 import asyncio
 from discord import app_commands
 from discord.ext import commands
