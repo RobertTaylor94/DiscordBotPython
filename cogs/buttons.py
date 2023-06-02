@@ -1,69 +1,91 @@
-import discord
+from typing import Any
 import random
 from discord.ext import commands
-from discord import app_commands
+from discord import app_commands, Interaction, Embed, ButtonStyle
+from discord.ui import View, Button
+from discord.interactions import Interaction
 
 class buttons(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @app_commands.command(name='button', description='Display commonly used rolls as buttons')
-    async def button(self, interaction: discord.Interaction):
-        print("button command issued")
+    async def button(self, interaction: Interaction):
         view = buttonsView()
-        await interaction.response.send_message("hello", view=view, ephemeral = True)
+        await interaction.response.send_message(view=view, ephemeral = True)
 
-class buttonsView(discord.ui.View):
+class buttonsView(View):
     def __init__(self):
         super().__init__()
         self.add_item(attackButton())
         self.add_item(aaronCharge())
         self.add_item(bubbleBeardHealing())
+        self.add_item(d12Button())
+        self.add_item(d100Button())
 
-class attackButton(discord.ui.Button):
+class d12Button(Button):
     def __init__(self):
-        super().__init__(style=discord.ButtonStyle.primary, label="Attack")
+        super().__init__(style=ButtonStyle.secondary, label="d12")
+
+    async def callback(self, interaction: Interaction):
+        roll = int(random.choice(range(1, 13)))
+        embed = Embed(title=f'{interaction.user.name}', description=f'{roll}', type='rich')
+
+class d100Button(Button):
+    def __init__(self):
+        super().__init__(style= ButtonStyle.secondary, label="Percentile")
+
+    async def callback(self, interaction: Interaction):
+        roll = int(random.choice(range(1, 101)))
+        embed = Embed(title=f'{interaction.user.name}', description=f'{roll}', type='rich')
+
+class attackButton(Button):
+    def __init__(self):
+        super().__init__(style= ButtonStyle.primary, label="Attack")
     
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: Interaction):
         if interaction.user.name == 'murvoth':
             roll = int(random.choice(range(1, 21)))
             total= str(roll+15)
-            view = discord.ui.View()
+            view = View()
             view.add_item(rollDamage())
-            embed = discord.Embed(color=1, title=f'Attack by {interaction.user.name}', description=f'{roll} + 15 = {total}', type='rich')
+            embed = Embed(color=1, title=f'Attack by {interaction.user.name}', description=f'{roll} + 15 = {total}', type='rich')
             await interaction.response.send_message(view=view, embed=embed)
         else:
             await interaction.response.send_message(f'Attack button pressed by someone')
 
-class rollDamage(discord.ui.Button):
+class rollDamage(Button):
     def __init__(self):
-        super().__init__(style=discord.ButtonStyle.secondary, label="Roll Damage")
+        super().__init__(style = ButtonStyle.secondary, label="Roll Damage")
 
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: Interaction):
         if interaction.user.name == 'murvoth':
             roll1 = int(random.choice(range(1, 11)))
             roll2 = int(random.choice(range(1, 5)))
             total = str(roll1 + roll2 + 5)
-            embed = discord.Embed(color=2, title=f'Damage by {interaction.user.name}', description=f'{roll1} + {roll2} + 5 = {total}', type='rich')
+            embed = Embed(color=2, title=f'Damage by {interaction.user.name}', description=f'{roll1} + {roll2} + 5 = {total}', type='rich')
             await interaction.response.send_message(embed=embed)
+            # await interaction.response.send_message(view=buttonsView(), ephemeral=True)
         else:
             await interaction.response.send_message('Damage be damaging')
 
-class aaronCharge(discord.ui.Button):
+class aaronCharge(Button):
     def __init__(self):
-        super().__init__(style=discord.ButtonStyle.primary, label="Aaron Charge")
+        super().__init__(style=ButtonStyle.primary, label="Aaron Charge")
 
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: Interaction):
         roll1 = int(random.choice(range(1, 21)))
         total = str(roll1 + 18)
-        embed = discord.Embed(type='rich', title="Aaron's Charge", description=f'{roll1} + 18\n{total}')
+        embed = Embed(type='rich', title="Aaron's Charge", description=f'{roll1} + 18\n{total}')
+        view = buttonsView()
         await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(view=view, ephemeral=True)
 
-class bubbleBeardHealing(discord.ui.Button):
+class bubbleBeardHealing(Button):
     def __init__(self):
-        super().__init__(style=discord.ButtonStyle.success, label="Bubble Beard Healing")
+        super().__init__(style=ButtonStyle.success, label="Bubble Beard Healing")
 
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: Interaction):
         array = []
         total = 0
         for i in range(0, 6):
@@ -73,9 +95,10 @@ class bubbleBeardHealing(discord.ui.Button):
         for i in array:
             total += i
 
-        embed = discord.Embed(type='rich', title="Bubble Beard Healing", description=f'{array}\nTotal: {total}')
-        
+        embed = Embed(type='rich', title="Bubble Beard Healing", description=f'{array}\nTotal: {total}')
+        view = buttonsView()
         await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(view=view, ephemeral=True)
 
 
 async def setup(bot):
