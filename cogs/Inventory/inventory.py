@@ -18,9 +18,7 @@ class inventory(commands.Cog):
         
         if str(interaction.user.id) not in inventory:
             inventory[str(interaction.user.id)] = []
-            with open("inventory.json", "w") as f:
-                json.dump(inventory, f)
-                print('json saved')
+            await self.save_file(inventory)
         else:
             player_inventory = inventory[str(interaction.user.id)]
             for item in player_inventory:
@@ -42,10 +40,7 @@ class inventory(commands.Cog):
         player_inventory.append(new_item)
 
         inventory[str(interaction.user.id)] = player_inventory
-
-        with open("inventory.json", "w") as f:
-            json.dump(inventory, f)
-            print('json saved')
+        await self.save_file(inventory)
 
         em = Embed(title=f'{interaction.user.name}')
         em.add_field(name=new_item['Name'], value=new_item['description'])
@@ -68,9 +63,7 @@ class inventory(commands.Cog):
         print(f'New inventory {player_inventory}')
 
         inventory[str(interaction.user.id)] = player_inventory
-        with open("inventory.json", "w") as f:
-            json.dump(inventory, f)
-            print('json saved')
+        await self.save_file(inventory)
         
         em = Embed(title = f"{interaction.user.name}'s Inventory")
         for item in player_inventory:
@@ -87,6 +80,11 @@ class inventory(commands.Cog):
         with open("inventory.json", "r") as f:
             inventory = json.load(f)
             return inventory
+        
+    async def save_file(self, file):
+        with open("inventory.json", "w") as f:
+            json.dump(file, f)
+            print('json saved')
 
 async def setup(bot):
     await bot.add_cog(inventory(bot))
