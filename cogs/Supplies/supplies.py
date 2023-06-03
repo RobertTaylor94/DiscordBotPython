@@ -62,10 +62,12 @@ class supplies(commands.Cog):
     
     async def get_supplies(self):
         print('get supplies called')
+        os.chdir('../Supplies')
+        print(os.getcwd())
         with open("supplies.json", "r") as f:
             supplies = json.load(f)
             print(supplies)
             return supplies
 
 async def setup(bot):
-    await bot.add_cog(inventory(bot))
+    await bot.add_cog(supplies(bot))
