@@ -2,7 +2,7 @@ import random
 from discord.ext import commands
 from discord import app_commands, Interaction, Embed, ButtonStyle
 from discord.ui import View, Button
-from discord.interactions import Interaction
+from discord import Interaction
 
 class buttons(commands.Cog):
     def __init__(self, bot):
