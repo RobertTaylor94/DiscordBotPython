@@ -13,7 +13,7 @@ class inventory(commands.Cog):
     async def inventory(self, interaction: Interaction):
         print('get_inventory called')
         inventory = await self.get_inventory()
-        print('got inventory)')
+        print('got inventory')
         em = Embed(title=f"{interaction.user.name}'s Inventory")
         
         if str(interaction.user.id) not in inventory:
@@ -21,15 +21,14 @@ class inventory(commands.Cog):
             with open("inventory.json", "w") as f:
                 json.dump(inventory, f)
                 print('json saved')
-            em.description = 'Inventory empty'
-            await interaction.response.send_message(embed=em)
         else:
             player_inventory = inventory[str(interaction.user.id)]
             for item in player_inventory:
-                    name = item['name']
-                    desc = item['description']
-                    em.add_field(name = name, value=f'{desc}')
-            await interaction.response.send_message(embed=em)
+                item_name = item['Name']
+                desc = item['description']
+                em.add_field(name=item_name, value=desc)
+        
+        await interaction.response.send_message(embed=em)
             
     @app_commands.command(name='add_inventory', description='Add an item to your inventory')
     @app_commands.describe(name='name', description='description')
@@ -38,11 +37,18 @@ class inventory(commands.Cog):
         player_inventory = inventory[str(interaction.user.id)]
         if player_inventory == None:
             print('Player inventory not found')
-        new_item = {name: name, description: description}
+        new_item = {'Name': name, 'description': description}
         print(player_inventory)
         player_inventory.append(new_item)
-        print(new_item)
-        em = Embed(title=f'{interaction.user.name}', description=f'{player_inventory}')
+
+        inventory[str(interaction.user.id)] = player_inventory
+
+        with open("inventory.json", "w") as f:
+            json.dump(inventory, f)
+            print('json saved')
+
+        em = Embed(title=f'{interaction.user.name}')
+        em.add_field(name=new_item['Name'], value=new_item['description'])
 
         await interaction.response.send_message(embed=em)
 
@@ -52,7 +58,6 @@ class inventory(commands.Cog):
         print(os.getcwd())
         with open("inventory.json", "r") as f:
             inventory = json.load(f)
-            print(inventory)
             return inventory
 
 async def setup(bot):
