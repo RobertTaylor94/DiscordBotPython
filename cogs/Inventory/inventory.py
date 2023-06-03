@@ -35,7 +35,16 @@ class inventory(commands.Cog):
     @app_commands.describe(name='name', description='description')
     async def add(self, interaction: Interaction, name: str, description: str):
         inventory = await self.get_inventory()
-        
+        player_inventory = inventory[str(interaction.user.id)]
+        if player_inventory == None:
+            print('Player inventory not found')
+        new_item = {name: name, description: description}
+        print(player_inventory)
+        player_inventory.append(new_item)
+        print(new_item)
+        em = Embed(title=f'{interaction.user.name}', description=f'{player_inventory}')
+
+        await interaction.response.send_message(embed=em)
 
     async def get_inventory(self):
         print('get inventory called')
