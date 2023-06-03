@@ -23,6 +23,20 @@ class inventory(commands.Cog):
         embed.add_field(name='Drink', value=drink_amt)
         await interaction.response.send_message(embed=embed)
 
+    @app_commands.command(name='Add Supplies', description='Add food and drink to the rations')
+    @app_commands.describe(food='Food', drink='Drink')
+    async def add(self, interaction: Interaction):
+        supplies = await self.get_supplies()
+        supplies[str('food')] += self.food
+        supplies[str('drink')] += self.drink
+
+        with open("supplies.json", "w") as f:
+            json.dump(supplies, f)
+        embed = Embed(title='Added Supplies')
+        embed.add_field(name='Food', value=supplies[str('food')])
+        embed.add_field(name='Drink', value=supplies[str('drink')])
+        await interaction.response.send_message(embed=embed)
+
     async def set_supplies(self):
         supplies = await self.get_supplies()
 
