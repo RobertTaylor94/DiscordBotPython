@@ -5,7 +5,7 @@ import os
 
 os.chdir('cogs/Supplies')
 
-class inventory(commands.Cog):
+class supplies(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
