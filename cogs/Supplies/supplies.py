@@ -27,11 +27,19 @@ class inventory(commands.Cog):
     @app_commands.describe(food='food', drink='drink')
     async def add(self, interaction: Interaction, food: int, drink: int):
         supplies = await self.get_supplies()
-        supplies[str('food')] += self.food
-        supplies[str('drink')] += self.drink
+        print('got supplies')
+        old_food = supplies[str('food')]
+        old_drink = supplies[str('drink')]
+        new_food = old_food + food
+        new_drink = old_drink + drink
+
+        supplies[str('food')] = new_food
+        supplies[str('drink')] = new_drink
 
         with open("supplies.json", "w") as f:
             json.dump(supplies, f)
+            print('json saved')
+
         embed = Embed(title='Added Supplies')
         embed.add_field(name='Food', value=supplies[str('food')])
         embed.add_field(name='Drink', value=supplies[str('drink')])
