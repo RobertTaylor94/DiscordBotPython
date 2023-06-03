@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 .DS_STORE
+
+# Other
+cogs/Supplies/supplies.json
+
 # C extensions
 *.so
 
