@@ -1,18 +1,27 @@
 from discord.ext import commands
-from discord import app_commands, Embed
-from discord.interactions import Interaction
+from discord import app_commands, Embed, Interaction
 import json
 import os 
+
+os.chdir('cogs/Supplies')
 
 class inventory(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='supplies', description='Check the food and drink supplies held on the ship')
+    @app_commands.command(name='supplies', description='Check the food and drink supplies held on the ship')
     async def supplies(self, interaction: Interaction):
         print('supplies called...')
         supplies = await self.get_supplies()
         print('supplies loaded')
+
+        food_amt = supplies[str('food')]
+        drink_amt = supplies[str('drink')]
+
+        embed = Embed(type='rich', title='Ship Supplies')
+        embed.add_field(name='Food', value=food_amt)
+        embed.add_field(name='Drink', value=drink_amt)
+        await interaction.response.send_message(embed=embed)
 
     async def set_supplies(self):
         supplies = await self.get_supplies()
@@ -34,6 +43,7 @@ class inventory(commands.Cog):
         print('get supplies called')
         with open("supplies.json", "r") as f:
             supplies = json.load(f)
+            print(supplies)
             return supplies
 
 async def setup(bot):
