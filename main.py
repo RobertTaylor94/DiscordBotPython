@@ -21,6 +21,9 @@ async def load():
     for filename in os.listdir('./cogs/Supplies'):
         if filename.endswith('.py'):
             await bot.load_extension(f'cogs.Supplies.{filename[:-3]}')
+    for filename in os.listdir('./cogs/Inventory'):
+        if filename.endswith('.py'):
+            await bot.load_extension(f'cogs.Inventory.{filename[:-3]}')
 
 async def main():
     await load()
