@@ -1,5 +1,6 @@
 from discord.ext import commands
 from discord import app_commands, Embed, Interaction
+from typing import Literal
 import json
 import os 
 
@@ -11,9 +12,10 @@ class create_attack(commands.Cog):
 
     @app_commands.command(name = 'create_attack', description = 'Add a custom attack roll to your character')
     @app_commands.describe(name = 'name', atkbonus = 'atkbonus', dmgdice = 'dmgdice (e.g. 1d10 + 1d4)', dmgbonus = 'dmgbonus')
-    async def create_attack(self, interaction: Interaction, name: str, atkbonus: int, dmgdice: str, dmgbonus: int, atkdice = '1d20'):
+    async def create_attack(self, interaction: Interaction, name: str, atkbonus: int, dmgdice: str, dmgbonus: int, type = 'attack', atkdice = '1d20'):
         print('running create_attack')
         custom_rolls = await self.get_custom_rolls()
+        player_rolls = custom_rolls[str(interaction.user.id)]
 
     @app_commands.command(name = 'check_rolls', description = 'Check your custom rolls')
     async def check_rolls(self, interaction: Interaction):
