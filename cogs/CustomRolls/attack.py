@@ -12,7 +12,7 @@ class create_attack(commands.Cog):
 
     @app_commands.command(name = 'create_attack', description = 'Add a custom attack roll to your character')
     @app_commands.describe(name = 'name', atkbonus = 'atkbonus', dmgdice = 'dmgdice (e.g. 1d10 + 1d4)', dmgbonus = 'dmgbonus')
-    async def create_attack(self, interaction: Interaction, name: str, atkbonus: int, dmgdice: str, dmgbonus: int, type = 'attack', atkdice = '1d20'):
+    async def create_attack(self, interaction: Interaction, name: str, atkbonus: int, dmgdice: str, dmgbonus: int, atkdice: str = '1d20', type: str = 'attack'):
         print('running create_attack')
         custom_rolls = await self.get_custom_rolls()
         player_rolls = custom_rolls[str(interaction.user.id)]
@@ -28,11 +28,8 @@ class create_attack(commands.Cog):
         else:
             user_rolls = custom_rolls[str(interaction.user.id)]
             for roll in user_rolls:
-                roll_name = roll['name']
-                atkbonus = roll['atkbonus']
-                dmgroll = roll['dmgroll']
-                dmgbonus = roll['dmgbonus']
-                em.add_field(name = roll_name, value = f'Attack: 1d20 + {atkbonus}\nDamage: {dmgroll} + {dmgbonus}')
+                type = roll['type']
+                print(type)
 
         await interaction.response.send_message(embed=em, ephemeral=True)
 
