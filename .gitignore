@@ -7,6 +7,7 @@ __pycache__/
 # Other
 cogs/Supplies/supplies.json
 cogs/Inventory/inventory.json
+cogs/CustomRolls/customRolls.json
 
 # C extensions
 *.so
