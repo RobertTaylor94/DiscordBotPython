@@ -17,6 +17,16 @@ class create_attack(commands.Cog):
         custom_rolls = await self.get_custom_rolls()
         player_rolls = custom_rolls[str(interaction.user.id)]
 
+        new_role = {'name': name, 'atkbonus': atkbonus, 'dmgdice': dmgdice, 'dmgbonus': dmgbonus, 'atkdice': atkdice, 'type': type}
+        player_rolls.append(new_role)
+
+        custom_rolls[str(interaction.user.id)] = player_rolls
+        await self.save_rolls(custom_rolls)
+
+        em = Embed(title = "New Role")
+        em.add_field(name = name, value = f'Attack Bonus: {atkbonus}\nDamage: {dmgdice} + {dmgbonus}\nType: {type}')
+        await interaction.response.send_message(embed = em, ephemeral = True)
+
     @app_commands.command(name = 'check_rolls', description = 'Check your custom rolls')
     async def check_rolls(self, interaction: Interaction):
         print('checking user rolls...')
@@ -30,6 +40,11 @@ class create_attack(commands.Cog):
             for roll in user_rolls:
                 type = roll['type']
                 print(type)
+                match type:
+                    case 'attack':
+                        print(roll['name'], roll['atkbonus'])
+                    case _:
+                        print('no types found')
 
         await interaction.response.send_message(embed=em, ephemeral=True)
 
