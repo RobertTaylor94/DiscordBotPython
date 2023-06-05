@@ -7,8 +7,8 @@ class buttons(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name='button', description='Display commonly used rolls as buttons')
-    async def button(self, interaction: Interaction):
+    @app_commands.command(name='b', description='Display commonly used rolls as buttons')
+    async def b(self, interaction: Interaction):
         view = buttonsView()
         await interaction.response.send_message(view=view, ephemeral = True)
 
