@@ -6,7 +6,7 @@ import os
 
 os.chdir('cogs/CustomRolls')
 
-class create_attack(commands.Cog):
+class custom_rolls(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -38,15 +38,16 @@ class create_attack(commands.Cog):
         else:
             user_rolls = custom_rolls[str(interaction.user.id)]
             for roll in user_rolls:
-                type = roll['type']
-                print(type)
-                match type:
-                    case 'attack':
-                        print(roll['name'], roll['atkbonus'])
-                    case _:
-                        print('no types found')
+                print(roll['name'], roll['atkbonus'])
+                em.add_field(name = roll['name'], value = f'Attack Bonus: {roll["atkbonus"]}\nDamage: {roll["dmgdice"]} + {roll["dmgbonus"]}\nType: {roll["type"]}')
 
         await interaction.response.send_message(embed=em, ephemeral=True)
+
+    @app_commands.command(name = 'custom_roll', description = 'Roll one of your custom rolls')
+    @app_commands.describe(roll = 'roll')
+    async def custom_roll(self, ctx, roll: str):
+         print("rolling custom roll")
+         
 
     async def get_custom_rolls(self):
         print('getting custom rolls...')
@@ -61,4 +62,4 @@ class create_attack(commands.Cog):
             print('json saved')
 
 async def setup(bot):
-    await bot.add_cog(create_attack(bot))
+    await bot.add_cog(custom_rolls(bot))
