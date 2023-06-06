@@ -24,7 +24,7 @@ class custom_rolls(commands.Cog):
             player_rolls.append(new_role)
             em.add_field(name = name, value = f'Attack Bonus: {atkbonus}\nDamage: {dmgdice} + {dmgbonus}\nType: {type}')
         if roll_type == 'other':
-            new_role = {'name': name, 'dice': dice, 'bonus': bonus}
+            new_role = {'name': name, 'dice': dice, 'bonus': bonus, 'type': type}
             player_rolls.append(new_role)
             em.add_field(name = name, value = f'Roll: {dice} + {bonus}')
 
@@ -48,8 +48,7 @@ class custom_rolls(commands.Cog):
                     print('found an attack')
                     em.add_field(name = roll['name'], value = f'Attack Bonus: {roll["atkbonus"]}\nDamage: {roll["dmgdice"]} + {roll["dmgbonus"]}\nType: {roll["type"]}')
                     print('added roll to em')
-                elif roll['type'] == 'other':
-                    #BROKEN!!!
+                else:
                     print('found other roles')
                     em.add_field(name = roll['name'], value = f'Roll: {roll["dice"]} + {roll["bonus"]}')
 
@@ -77,6 +76,7 @@ class custom_rolls(commands.Cog):
                 del player_roles[i]
             else:
                 print('roll not found')
+                await interaction.response.send_message("roll not found")
         custom_rolls[str(interaction.user.id)] = player_roles
         await self.save_rolls(custom_rolls)
 
