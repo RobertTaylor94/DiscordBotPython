@@ -57,9 +57,9 @@ class custom_rolls(commands.Cog):
 
         await interaction.response.send_message(embed=em, ephemeral=True)
 
-    @app_commands.command(name = 'custom_roll', description = 'Roll one of your custom rolls')
+    @app_commands.command(name = 'cr', description = 'Roll one of your custom rolls')
     @app_commands.describe(roll = 'the name of your roll')
-    async def custom_roll(self, interaction: Interaction, roll: str):
+    async def cr(self, interaction: Interaction, roll: str):
         print("rolling custom roll")
         custom_rolls = await self.get_custom_rolls()
         player_rolls = custom_rolls[str(interaction.user.id)]
@@ -76,6 +76,12 @@ class custom_rolls(commands.Cog):
             dmg_button = self.damageButton(dmgdice, dmgbonus)
             view.add_item(dmg_button)
             await interaction.response.send_message(embed=em, view=view)
+        else:
+            name = dice_to_roll['name']
+            dice = dice_to_roll['dice']
+            bonus = dice_to_roll['bonus']
+            
+            #TODO
 
     @app_commands.command(name = 'delete_roll', description = 'Delete one of your custom rolls')
     @app_commands.describe(roll = 'The name of the roll to delete')
