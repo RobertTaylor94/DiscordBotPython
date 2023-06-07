@@ -13,9 +13,9 @@ class custom_rolls(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name = 'create_roll', description = 'Add a custom attack roll to your character')
+    @app_commands.command(name = 'add_roll', description = 'Add a custom attack roll to your character')
     @app_commands.describe(name = 'name', type = 'type of roll', atkbonus = 'your attack bonus', dmgdice = 'your damage dice (e.g. 1d10 + 1d4)', dmgbonus = 'your damage bonus', dice = 'dice to roll', bonus = 'bonus to the roll')
-    async def create_attack(self, interaction: Interaction, name: str, type: Literal['attack', 'other'], atkbonus: int = 0, dmgdice: str = '', dmgbonus: int = 0, atkdice: str = '1d20', dice: str = '', bonus: int = 0):
+    async def add_role(self, interaction: Interaction, name: str, type: Literal['attack', 'other'], atkbonus: int = 0, dmgdice: str = '', dmgbonus: int = 0, atkdice: str = '1d20', dice: str = '1d20', bonus: int = 0):
         print('running create_roll')
         custom_rolls = await self.get_custom_rolls()
         player_rolls = custom_rolls[str(interaction.user.id)]
