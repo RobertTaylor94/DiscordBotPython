@@ -28,10 +28,15 @@ WIP not currently available for public use.
 
 /delete_roll -- allows the user to delete one of their custom rolls
 
-## Pirate Campaign
+### Pirate Campaign
 
 Commands specific to the current pirate campaign
 
 /supplies -- show a list of food and drink supplies onboard the ship
 
 /update_supplies -- allows all users to update the ship supplies
+
+## Currently working on...
+
+- Custom roles of type 'other' cannot be rolled right now
+- Adding ability to add extra bonuses to custom rolls
