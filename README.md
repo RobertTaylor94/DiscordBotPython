@@ -24,9 +24,11 @@ WIP not currently available for public use.
 
 /check_roles -- shows a list of custom rolls the user performing the command has saved.
 
-/create_roll -- allows the user to create a new custom dice roll with two options: an attack type with parameters for attack bonus, damage dice and damage bonus and an other type with parameters for dice to roll and bonus for the roll.
+/add_roll -- allows the user to create a new custom dice roll with two options: an attack type with parameters for attack bonus, damage dice and damage bonus and an other type with parameters for dice to roll and bonus for the roll.
 
-/delete_roll -- allows the user to delete one of their custom rolls
+/delete_roll -- allows the user to delete one of their custom rolls.
+
+/cr -- takes the name of a custom roll with an extra parameter for further attack, damage or other bonuses.
 
 ### Pirate Campaign
 
@@ -35,8 +37,3 @@ Commands specific to the current pirate campaign
 /supplies -- show a list of food and drink supplies onboard the ship
 
 /update_supplies -- allows all users to update the ship supplies
-
-## Currently working on...
-
-- Custom roles of type 'other' cannot be rolled right now
-- Adding ability to add extra bonuses to custom rolls
