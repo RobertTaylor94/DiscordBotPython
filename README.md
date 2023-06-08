@@ -1,6 +1,6 @@
 # DiscordBot
 
-This bot is being actively worked on, see planned feature list below.
+This bot is being actively worked on, most features implemented and working, some WIP and could do with some refactoring.
 
 ## About
 
