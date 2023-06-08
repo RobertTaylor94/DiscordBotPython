@@ -1,10 +1,10 @@
-# DiscordBot
+# Legend Discord Bot
 
 This bot is being actively worked on, most features implemented and working, some WIP and could do with some refactoring.
 
 ## About
 
-A discord bot for dice rolls and inventory tracking in Rule of Cool's Legend RPG system. Currently refining features and adding new features to have a minimum viable product for use in the Legend game I currently play in.
+A discord bot for dice rolls and inventory tracking in Rule of Cool's Legend TTRPG system. Currently refining features and adding new features to have a minimum viable product for use in the Legend game I currently play in.
 
 ## Adding bot
 
