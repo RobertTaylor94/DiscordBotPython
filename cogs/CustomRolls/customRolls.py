@@ -94,7 +94,6 @@ class custom_rolls(commands.Cog):
         else:
             await interaction.response.send_message("roll not found")
 
-        print("saving new rolls")
         custom_rolls[str(interaction.user.id)] = player_rolls
         await self.save_rolls(custom_rolls)
 
