@@ -77,24 +77,26 @@ class custom_rolls(commands.Cog):
     async def delete_roll(self, interaction: Interaction, roll: str):
         print('deleting roll...')
         custom_rolls = await self.get_custom_rolls()
-        player_roles = custom_rolls[str(interaction.user.id)]
+        player_rolls = custom_rolls[str(interaction.user.id)]
         deleted_roll = roll
-        for i, item in enumerate(player_roles):
-            if player_roles[i]['name'] == deleted_roll:
-                del player_roles[i]
-            else:
-                print('roll not found')
-                await interaction.response.send_message("roll not found")
-        custom_rolls[str(interaction.user.id)] = player_roles
-        await self.save_rolls(custom_rolls)
+        values = []
 
-        em = Embed(title = f"{interaction.user.name}'s Rolls")
-        for roll in player_roles:
-            if roll['type'] == 'attack':
-                em.add_field(name = roll['name'])
-            else:
-                em.add_field(name = roll['name'])
-        await interaction.response.send_message(embed=em, ephemeral=True)
+        for item in player_rolls:
+            values.append(item['name'])
+            print(values)
+
+        if deleted_roll in values:
+            print("roll found in player_rolls")
+            for i, item in enumerate(player_rolls):
+                if player_rolls[i]['name'] == deleted_roll:
+                    del player_rolls[i]
+            await interaction.response.send_message(f"{deleted_roll} removed.")
+        else:
+            await interaction.response.send_message("roll not found")
+
+        print("saving new rolls")
+        custom_rolls[str(interaction.user.id)] = player_rolls
+        await self.save_rolls(custom_rolls)
 
     async def get_custom_rolls(self):
         print('getting custom rolls...')
