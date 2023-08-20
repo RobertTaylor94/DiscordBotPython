@@ -6,7 +6,7 @@ import os
 
 
 class characterUtils():
-    async def get_character(self):
+    async def get_characters(self):
         os.chdir('../Character')
         print(os.getcwd())
         with open('characters.json', 'r') as f:
@@ -38,3 +38,13 @@ class characterUtils():
         with open('feats.json', 'r') as f:
             feats = json.load(f)
             return feats
+        
+    async def init_user(self, user):
+        print('getting characters')
+        characters = self.get_characters()
+        if str(user.id) not in characters:
+            print('initialising user')
+            characters[str(user.id)] = []
+            await self.save_characters()
+        else:
+            pass
