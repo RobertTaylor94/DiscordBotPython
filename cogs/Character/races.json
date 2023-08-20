@@ -1,0 +1,71 @@
+{
+    "dwarf": {
+        "name": "Dwarf", 
+        "size": "Average", 
+        "type": "Humanoid", 
+        "bonusFeatChoice": ["Livers Need Not Apply", "Slow and Steady", "Rune Magic"], 
+        "abilityBonus": [{"con": 2, "int": 2, "cha": -2}],
+        "darkvision": true,
+        "ghostwise sight": false,
+        "baseSpeed": "30ft",
+        "skills": {"engineering": 1}
+    },
+    "elf": {
+        "name": "Elf", 
+        "size": "Average", 
+        "type": "Humanoid", 
+        "bonusFeatChoice": ["By Will Sustained", "Arcantric Accuracy", "Summon Mote"], 
+        "abilityBonus": [{"dex": 2, "con": -2}],
+        "darkvision": false,
+        "ghostwise sight": true,
+        "baseSpeed": "30ft",
+        "skills": {"nature": 1},
+        "abilityChoice": [2, "cha", "wis", "int"]
+    },
+    "gnome": {
+        "name": "Gnome", 
+        "size": "Small", 
+        "type": "Humanoid", 
+        "bonusFeatChoice": ["Chatty Bugger", "Summon Mote", "The Bigger They Are"], 
+        "abilityBonus": [{"con": 2, "cha": 2, "str": -2}],
+        "darkvision": true,
+        "ghostwise sight": false,
+        "baseSpeed": "25ft",
+        "skills": {}
+    },
+    "halfling": {
+        "name": "Halfling", 
+        "size": "Small", 
+        "type": "Humanoid", 
+        "bonusFeatChoice": ["Any One"], 
+        "abilityBonus": [{"dex": 2}],
+        "darkvision": false,
+        "ghostwise sight": false,
+        "baseSpeed": "30ft",
+        "skills": {"": 1},
+        "will": 2
+    },
+    "human": {
+        "name": "Human", 
+        "size": "Average", 
+        "type": "Humanoid", 
+        "bonusFeatChoice": ["Any One"], 
+        "darkvision": false,
+        "ghostwise sight": false,
+        "baseSpeed": "30ft",
+        "skills": {"Any": 1},
+        "abilityChoice": ["cha", "wis", "int", "str", "con", "dex"],
+        "racialBonus": [1, "attack", "AC", "fort", "ref", "will"]
+    },
+    "orc": {
+        "name": "Orc", 
+        "size": "Average", 
+        "type": "Humanoid", 
+        "bonusFeatChoice": ["Reckless Strike", "To Iron Married", "Cataphract"], 
+        "abilityBonus": [{"str": 2, "con": 2, "cha": -2}],
+        "darkvision": true,
+        "ghostwise sight": false,
+        "baseSpeed": "30ft",
+        "skills": {"athletics": 1}
+    }
+}
