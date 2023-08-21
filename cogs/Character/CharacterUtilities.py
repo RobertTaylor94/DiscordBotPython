@@ -1,19 +1,27 @@
 # from discord.ext import commands
 # from discord import app_commands, Embed, Interaction
 # from discord import SlashCommandGroup
+import asyncio
 import json
 import os 
 
 
 class characterUtils():
     async def get_characters(self):
-        os.chdir('../Character')
-        print(os.getcwd())
-        with open('characters.json', 'r') as f:
-            characters = json.load(f)
-            return characters
+        try:
+            print("get_characters called")
+            os.chdir('../Character')
+            print(os.getcwd())
+            with open('characters.json', 'r') as f:
+                characters = json.load(f)
+                print('characters loaded')
+                return characters
+        except Exception as e:
+            print(f'Error: {e}')
+            return {}
     
     async def save_characters(self, file):
+        print('saving...')
         with open('characters.json', 'w') as f:
             json.dump(file, f)
             print('characters.json saved')
@@ -38,13 +46,3 @@ class characterUtils():
         with open('feats.json', 'r') as f:
             feats = json.load(f)
             return feats
-        
-    async def init_user(self, user):
-        print('getting characters')
-        characters = self.get_characters()
-        if str(user.id) not in characters:
-            print('initialising user')
-            characters[str(user.id)] = []
-            await self.save_characters()
-        else:
-            pass
