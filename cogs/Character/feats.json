@@ -1,0 +1,15 @@
+{
+    "Livers Need Not Apply": {
+        "prerequisites": {
+            "constitution": 14,
+            "The Bitter Dregs": false
+        },
+        "benefit": "You no longer suffer negative effects from drinking alcohol.  Store two drinks inside you for future use, and one additional drink for each point of Constitution modifier. Expend one of these drinks as a move action and recover 1d4 HP per character level."
+    },
+    "Slow and Steady": {
+        "prerequisites": {
+            "level": 1
+        },
+        "benefit": "Instead of falling [Prone], halve your movement speed."
+    }
+}
