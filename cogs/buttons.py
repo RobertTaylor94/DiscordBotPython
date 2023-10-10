@@ -15,9 +15,9 @@ class buttons(commands.Cog):
 class buttonsView(View):
     def __init__(self):
         super().__init__()
-        self.add_item(attackButton())
-        self.add_item(aaronCharge())
-        self.add_item(bubbleBeardHealing())
+        # self.add_item(attackButton())
+        # self.add_item(aaronCharge())
+        # self.add_item(bubbleBeardHealing())
         self.add_item(d12Button())
         self.add_item(d100Button())
 
