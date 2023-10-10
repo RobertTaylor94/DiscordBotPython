@@ -69,7 +69,7 @@ class custom_rolls(commands.Cog):
             await interaction.response.send_message(embed=em, view=view)
         else:
             roll_total = await self.roll(dice_to_roll['bonus'], extra)
-            em = Embed(title = f"{interaction.user.name}'s {dice_to_roll['name']}", description = f'{roll_total[0]} + {[dice_to_roll["bonus"] + extra]} = **{roll_total[1]}**')
+            em = Embed(title = f"{interaction.user.nick}'s {dice_to_roll['name']}", description = f'{roll_total[0]} + {[dice_to_roll["bonus"] + extra]} = **{roll_total[1]}**')
             await interaction.response.send_message(embed=em)
 
     @app_commands.command(name = 'delete_roll', description = 'Delete one of your custom rolls')
