@@ -136,7 +136,7 @@ class custom_rolls(commands.Cog):
                 rolls = np.concatenate((rolls, outcome)).astype(int)
             total = sum(rolls)
             total = total + bonus + extradmg
-            em = Embed(title = f"{interaction.user.name}'s Damage", description = f'{rolls} + {bonus} + {extradmg}\n**Total: {total}**')
+            em = Embed(title = f"{interaction.user.nick}'s Damage", description = f'{rolls} + {bonus} + {extradmg}\n**Total: {total}**')
             await interaction.response.send_message(embed=em)
 
         async def roll(self, dice: int, sides: int):

@@ -27,7 +27,7 @@ class d12Button(Button):
 
     async def callback(self, interaction: Interaction):
         roll = int(random.choice(range(1, 13)))
-        embed = Embed(title=f'{interaction.user.name}', description=f'{roll}', type='rich')
+        embed = Embed(title=f'{interaction.user.nick}', description=f'{roll}', type='rich')
         await interaction.response.send_message(embed=embed)
 
 class d100Button(Button):
@@ -36,7 +36,7 @@ class d100Button(Button):
 
     async def callback(self, interaction: Interaction):
         roll = int(random.choice(range(1, 101)))
-        embed = Embed(title=f'{interaction.user.name}', description=f'{roll}', type='rich')
+        embed = Embed(title=f'{interaction.user.nick}', description=f'{roll}', type='rich')
         await interaction.response.send_message(embed=embed)
 
 class attackButton(Button):
@@ -49,7 +49,7 @@ class attackButton(Button):
             total= str(roll+15)
             view = View()
             view.add_item(rollDamage())
-            embed = Embed(color=1, title=f'Attack by {interaction.user.name}', description=f'{roll} + 15 = {total}', type='rich')
+            embed = Embed(color=1, title=f'Attack by {interaction.user.nick}', description=f'{roll} + 15 = {total}', type='rich')
             await interaction.response.send_message(view=view, embed=embed)
         else:
             await interaction.response.send_message(f'Attack button pressed by someone')
@@ -63,7 +63,7 @@ class rollDamage(Button):
             roll1 = int(random.choice(range(1, 11)))
             roll2 = int(random.choice(range(1, 5)))
             total = str(roll1 + roll2 + 5)
-            embed = Embed(color=2, title=f'Damage by {interaction.user.name}', description=f'{roll1} + {roll2} + 5 = {total}', type='rich')
+            embed = Embed(color=2, title=f'Damage by {interaction.user.nick}', description=f'{roll1} + {roll2} + 5 = {total}', type='rich')
             await interaction.response.send_message(embed=embed)
         else:
             await interaction.response.send_message('Damage be damaging')
