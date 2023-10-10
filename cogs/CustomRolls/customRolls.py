@@ -62,7 +62,7 @@ class custom_rolls(commands.Cog):
         dice_to_roll = next((r for r in player_rolls if r['name'] == roll), None)
         if dice_to_roll['type'] == 'attack':
             roll_total = await self.roll(dice_to_roll['atkbonus'], extraatk)
-            em = Embed(title = f"{interaction.user.name}'s {dice_to_roll['name']} Attack", description = f'{roll_total[0]} + {(dice_to_roll["atkbonus"]+extraatk)} = **{roll_total[1]}**')
+            em = Embed(title = f"{interaction.user.nick}'s {dice_to_roll['name']} Attack", description = f'{roll_total[0]} + {(dice_to_roll["atkbonus"]+extraatk)} = **{roll_total[1]}**')
             view = View()
             dmg_button = self.damageButton(dice_to_roll['dmgdice'], dice_to_roll['dmgbonus'], extradmg)
             view.add_item(dmg_button)
