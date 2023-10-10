@@ -7,9 +7,9 @@ class expressionRoll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name='r', description='Roll a dice from an expression')
+    @app_commands.command(name='q', description='Roll a dice from an expression')
     @app_commands.describe(expression="expression", roll_type="rolling for")
-    async def r(self, interaction: Interaction, expression: str, roll_type:str = ""):
+    async def q(self, interaction: Interaction, expression: str, roll_type:str = ""):
         array = expression.split("+")
         rolls = []
         bonus = 0
@@ -30,7 +30,7 @@ class expressionRoll(commands.Cog):
                 bonus += int(i)
         total = sum(rolls)
         total += bonus
-        em = Embed(title=f'{interaction.user.name} {rolling}', description = f'{rolls} + {bonus}\n**Total: {total}**')
+        em = Embed(title=f'{interaction.user.nick} {rolling}', description = f'{rolls} + {bonus}\n**Total: {total}**')
         await interaction.response.send_message(embed=em)
     
     async def roll(self, dice: int, sides: int):
