@@ -2,7 +2,7 @@ import random
 from discord.ext import commands
 from discord import app_commands, Interaction, Embed
 import numpy as np
-
+from functions.roll import roll
 class expressionRoll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -24,7 +24,8 @@ class expressionRoll(commands.Cog):
                 roll_array = i.split("d")
                 dice = int(roll_array[0])
                 sides = int(roll_array[1])
-                outcome = await self.roll(dice, sides)
+                print('about to call roll...')
+                outcome = await roll(dice, sides)
                 rolls = np.concatenate((rolls, outcome)).astype(int)
             else:
                 bonus += int(i)
@@ -32,13 +33,6 @@ class expressionRoll(commands.Cog):
         total += bonus
         em = Embed(title=f'{interaction.user.nick} {rolling}', description = f'{rolls} + {bonus}\n**Total: {total}**')
         await interaction.response.send_message(embed=em)
-    
-    async def roll(self, dice: int, sides: int):
-        dice_array = []
-        for i in range(0, dice):
-            rand_num = random.randint(1, sides)
-            dice_array.append(rand_num)
-        return dice_array
     
 async def setup(bot):
     await bot.add_cog(expressionRoll(bot))
