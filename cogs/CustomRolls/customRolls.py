@@ -2,6 +2,8 @@ from discord.ext import commands
 from discord import app_commands, Embed, Interaction, ButtonStyle
 from discord.ui import View, Button
 from typing import Literal
+from functions.user_data import UserData
+from functions.roll import RollFunctions
 import json
 import os 
 import random
@@ -12,6 +14,7 @@ os.chdir('cogs/CustomRolls')
 class custom_rolls(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.roll_functions = RollFunctions()
 
     @app_commands.command(name = 'add_roll', description = 'Add a custom attack roll to your character')
     @app_commands.describe(name = 'name', type = 'type of roll', atkbonus = 'your attack bonus', dmgdice = 'your damage dice (e.g. 1d10 + 1d4)', dmgbonus = 'your damage bonus', dice = 'dice to roll', bonus = 'bonus to the roll')
@@ -55,27 +58,30 @@ class custom_rolls(commands.Cog):
     @app_commands.command(name = 'cr', description = 'Roll one of your custom rolls')
     @app_commands.describe(roll = 'the name of your roll', extraatk = 'extra bonus to attack rolls', extradmg = 'extra bonus to damage', extra = 'extra bonus to other roll')
     async def cr(self, interaction: Interaction, roll: str, extraatk: int = 0, extradmg: int = 0, extra: int = 0):
-        print("rolling custom roll")
         custom_rolls = await self.get_custom_rolls()
         player_rolls = custom_rolls[str(interaction.user.id)]
-        print('got rolls...finding your roll')
         dice_to_roll = next((r for r in player_rolls if r['name'] == roll), None)
+        user = UserData(interaction).get_user()
+
         if dice_to_roll['type'] == 'attack':
-            roll_total = await self.roll(dice_to_roll['atkbonus'], extraatk)
-            em = Embed(title = f"{interaction.user.nick}'s {dice_to_roll['name']} Attack", description = f'{roll_total[0]} + {(dice_to_roll["atkbonus"]+extraatk)} = **{roll_total[1]}**')
+            attack_role = await self.roll_functions.roll_attack(dice_to_roll['atkbonus'], extraatk)
+            em = Embed(title = f"{dice_to_roll['atkdice']} + {dice_to_roll['atkbonus']}\nTotal: {attack_role[1]}", description = f'{attack_role[0]}')
+            em.set_author(name=f"{user.nick}'s {roll}", icon_url=user.avatar_url)
             view = View()
-            dmg_button = self.damageButton(dice_to_roll['dmgdice'], dice_to_roll['dmgbonus'], extradmg)
+            dmg_button = self.damageButton(dice_to_roll['dmgdice'], dice_to_roll['dmgbonus'], extradmg, user)
             view.add_item(dmg_button)
             await interaction.response.send_message(embed=em, view=view)
         else:
-            roll_total = await self.roll(dice_to_roll['bonus'], extra)
-            em = Embed(title = f"{interaction.user.nick}'s {dice_to_roll['name']}", description = f'{roll_total[0]} + {[dice_to_roll["bonus"] + extra]} = **{roll_total[1]}**')
+            expression = f"{dice_to_roll['dice']}+{dice_to_roll['bonus']}"
+            print(dice_to_roll['dice'])
+            roll_total = await self.roll_functions.exp_roll(expression)
+            em = Embed(title = f"{dice_to_roll['dice']} + {dice_to_roll['bonus']}\nTotal: {roll_total[2]}", description=f"{roll_total[0]}")
+            em.set_author(name=f"{user.nick}'s {roll}", icon_url=user.avatar_url)
             await interaction.response.send_message(embed=em)
 
     @app_commands.command(name = 'delete_roll', description = 'Delete one of your custom rolls')
     @app_commands.describe(roll = 'The name of the roll to delete')
     async def delete_roll(self, interaction: Interaction, roll: str):
-        print('deleting roll...')
         custom_rolls = await self.get_custom_rolls()
         player_rolls = custom_rolls[str(interaction.user.id)]
         deleted_roll = roll
@@ -83,10 +89,8 @@ class custom_rolls(commands.Cog):
 
         for item in player_rolls:
             values.append(item['name'])
-            print(values)
 
         if deleted_roll in values:
-            print("roll found in player_rolls")
             for i, item in enumerate(player_rolls):
                 if player_rolls[i]['name'] == deleted_roll:
                     del player_rolls[i]
@@ -98,7 +102,6 @@ class custom_rolls(commands.Cog):
         await self.save_rolls(custom_rolls)
 
     async def get_custom_rolls(self):
-        print('getting custom rolls...')
         os.chdir('../CustomRolls')
         with open('customRolls.json', 'r') as f:
             customRolls = json.load(f)
@@ -107,36 +110,25 @@ class custom_rolls(commands.Cog):
     async def save_rolls(self, file):
         with open('customRolls.json', 'w') as f:
             json.dump(file, f)
-            print('json saved')
-
-    async def roll(self, bonus, extra):
-        print('roll_attack called')
-        roll = int(random.choice(range(1, 21)))
-        roll_total = str(roll+bonus+extra)
-        return (roll, roll_total)
 
     class damageButton(Button):
-        def __init__(self, dmgdice, dmgbonus, extradmg):
+        def __init__(self, dmgdice, dmgbonus, extradmg, user):
             super().__init__(style = ButtonStyle.secondary, label = "Damage")
             self.dmgdice = dmgdice
             self.dmgbonus = dmgbonus
             self.extradmg = extradmg
+            self.roll_functions = RollFunctions()
+            self.user = user
 
         async def callback(self, interaction: Interaction):
-            print('rolling damage')
-            array = self.dmgdice.split('+')
-            rolls = []
-            bonus = self.dmgbonus
-            extradmg = self.extradmg
-            for i in array:
-                roll_array = i.split('d')
-                dice = int(roll_array[0])
-                sides = int(roll_array[1])
-                outcome = await self.roll(dice, sides)
-                rolls = np.concatenate((rolls, outcome)).astype(int)
-            total = sum(rolls)
-            total = total + bonus + extradmg
-            em = Embed(title = f"{interaction.user.nick}'s Damage", description = f'{rolls} + {bonus} + {extradmg}\n**Total: {total}**')
+            expression = f"{self.dmgdice} + {self.dmgbonus} + {self.extradmg}"
+            result = await self.roll_functions.exp_roll(expression)
+            rolls = result[0]
+            bonus = result[1]
+            total = result[2]
+
+            em = Embed(title = f'{expression}\n**Total: {total}**', description=rolls)
+            em.set_author(name=f"{self.user.nick}'s Damage", icon_url=self.user.avatar_url)
             await interaction.response.send_message(embed=em)
 
         async def roll(self, dice: int, sides: int):
