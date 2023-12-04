@@ -21,15 +21,18 @@ class RollFunctions:
         array = expression.split("+")
         bonus = 0
         rolls = []
+        img_array = []
         for i in array:
             if "d" in i:
                 roll_array = i.split("d")
                 dice = int(roll_array[0])
                 sides = int(roll_array[1])
                 outcome = await self.roll(dice, sides)
+                for i in outcome:
+                    img_array.append([i, sides])
                 rolls = np.concatenate((rolls, outcome)).astype(int)
             else:
                 bonus += int(i)
         total = sum(rolls)
         total += bonus
-        return [rolls, bonus, total]
+        return [rolls, bonus, total, img_array]
