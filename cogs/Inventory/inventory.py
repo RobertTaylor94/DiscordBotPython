@@ -14,7 +14,7 @@ class inventory(commands.Cog):
         print('get_inventory called')
         inventory = await self.get_inventory()
         print('got inventory')
-        em = Embed(title=f"{interaction.user.name}'s Inventory")
+        em = Embed(title=f"{interaction.user.nick}'s Inventory")
         
         if str(interaction.user.id) not in inventory:
             inventory[str(interaction.user.id)] = []
@@ -42,7 +42,7 @@ class inventory(commands.Cog):
         inventory[str(interaction.user.id)] = player_inventory
         await self.save_file(inventory)
 
-        em = Embed(title=f'{interaction.user.name}')
+        em = Embed(title=f'{interaction.user.nick}')
         em.add_field(name=new_item['Name'], value=new_item['description'])
 
         await interaction.response.send_message(embed = em, ephemeral = True)
@@ -65,7 +65,7 @@ class inventory(commands.Cog):
         inventory[str(interaction.user.id)] = player_inventory
         await self.save_file(inventory)
         
-        em = Embed(title = f"{interaction.user.name}'s Inventory")
+        em = Embed(title = f"{interaction.user.nick}'s Inventory")
         for item in player_inventory:
                 item_name = item['Name']
                 desc = item['description']

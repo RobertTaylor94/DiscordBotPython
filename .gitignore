@@ -167,3 +167,4 @@ cython_debug/
 .vscode/settings.json
 cogs/Character/characters.json
 cogs/Character/characters.json
+.vscode/settings.json

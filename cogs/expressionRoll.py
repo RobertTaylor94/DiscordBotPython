@@ -1,44 +1,42 @@
 import random
 from discord.ext import commands
-from discord import app_commands, Interaction, Embed
+from discord import app_commands, Interaction, Embed, File
 import numpy as np
+from functions.roll import RollFunctions
+from functions.user_data import UserData
+from functions.get_dice_img import stitch_dice_images
 
 class expressionRoll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.roll_functions = RollFunctions()
 
-    @app_commands.command(name='r', description='Roll a dice from an expression')
+    @app_commands.command(name='q', description='Roll a dice from an expression')
     @app_commands.describe(expression="expression", roll_type="rolling for")
-    async def r(self, interaction: Interaction, expression: str, roll_type:str = ""):
-        array = expression.split("+")
-        rolls = []
-        bonus = 0
+    async def q(self, interaction: Interaction, expression: str, roll_type:str = ""):
+        user = UserData(interaction).get_user()
 
         if roll_type != "":
             rolling = f"For {roll_type}"
         else:
             rolling = ""
 
-        for i in array:
-            if "d" in i:
-                roll_array = i.split("d")
-                dice = int(roll_array[0])
-                sides = int(roll_array[1])
-                outcome = await self.roll(dice, sides)
-                rolls = np.concatenate((rolls, outcome)).astype(int)
-            else:
-                bonus += int(i)
-        total = sum(rolls)
-        total += bonus
-        em = Embed(title=f'{interaction.user.name} {rolling}', description = f'{rolls} + {bonus}\n**Total: {total}**')
-        await interaction.response.send_message(embed=em)
-    
-    async def roll(self, dice: int, sides: int):
-        dice_array = []
-        for i in range(0, dice):
-            rand_num = random.randint(1, sides)
-            dice_array.append(rand_num)
-        return dice_array
+        roll_total = await self.roll_functions.exp_roll(expression)
+        print(roll_total)
+        total = roll_total[2]
+        bonus = roll_total[1]
+        rolls = roll_total[0]
+        img_array = roll_total[3]
+
+        stitch_dice_images(img_array, user.id)
+        em1 = Embed(title=f'{expression}\n**Total: {total}**')
+        em1.set_author(name=f"{user.nick} {rolling}", icon_url=user.avatar_url)
+
+        file = File(f"/Users/robert/Desktop/DiscordBot/assets/{user.id}/stitched_image.png", filename="image.png")
+        em1.set_image(url="attachment://image.png")
+        await interaction.response.send_message(file=file, embed=em1)
     
 async def setup(bot):
     await bot.add_cog(expressionRoll(bot))
+
+
