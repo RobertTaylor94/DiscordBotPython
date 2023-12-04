@@ -22,8 +22,23 @@ class RollFunctions:
         bonus = 0
         rolls = []
         img_array = []
+
         for i in array:
-            if "d" in i:
+            if "d100" in i:
+                roll_array = i.split("d")
+                dice = int(roll_array[0])
+                sides = int(roll_array[1])
+                outcome = await self.roll(dice, sides)
+                for i in outcome:
+                    num_str = str(i)
+                    big_num = num_str[0]+'0'
+                    small_num = num_str[1]
+                    img_array.append([int(big_num), 100])
+                    img_array.append([int(small_num), 10])
+                    print(img_array)
+                rolls = np.concatenate((rolls, outcome)).astype(int)
+                print(rolls)
+            elif "d" in i:
                 roll_array = i.split("d")
                 dice = int(roll_array[0])
                 sides = int(roll_array[1])
