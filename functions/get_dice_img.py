@@ -9,10 +9,9 @@ def stitch_dice_images(dice_rolls, user_id):
         dice_result = roll[0]
         # Load the appropriate dice image
         dice_image = Image.open(f"/Users/robert/Desktop/Bot/assets/d{dice_type}/d{dice_type}s{dice_result}.png")
-        # dice_image = Image.open(f"/Users/robert/Desktop/Bot/assets/d20/d20s2.png")
         # Resize the dice image to a consistent size
         resized_dice_image = dice_image.resize((100, 100))
-        # Convert the dice image to RGB format if necessary
+        # Convert the dice image to RGBA format to preserve transparency
         if dice_image.mode != "RGBA":
             resized_dice_image = resized_dice_image.convert("RGBA")
         images.append(resized_dice_image)
