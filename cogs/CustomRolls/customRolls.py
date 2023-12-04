@@ -1,9 +1,10 @@
 from discord.ext import commands
-from discord import app_commands, Embed, Interaction, ButtonStyle
+from discord import app_commands, Embed, Interaction, ButtonStyle, File
 from discord.ui import View, Button
 from typing import Literal
 from functions.user_data import UserData
 from functions.roll import RollFunctions
+from functions.get_dice_img import stitch_dice_images
 import json
 import os 
 import random
@@ -65,19 +66,25 @@ class custom_rolls(commands.Cog):
 
         if dice_to_roll['type'] == 'attack':
             attack_role = await self.roll_functions.roll_attack(dice_to_roll['atkbonus'], extraatk)
-            em = Embed(title = f"{dice_to_roll['atkdice']} + {dice_to_roll['atkbonus']}\nTotal: {attack_role[1]}", description = f'{attack_role[0]}')
+            stitch_dice_images([[attack_role[0], 20]], user.id)
+            file = File(f"/Users/robert/Desktop/Bot/assets/{user.id}/stitched_image.png", filename="image.png")
+            em = Embed(title = f"{dice_to_roll['atkdice']} + {dice_to_roll['atkbonus']}\nTotal: {attack_role[1]}")
             em.set_author(name=f"{user.nick}'s {roll}", icon_url=user.avatar_url)
+            em.set_image(url="attachment://image.png")
             view = View()
             dmg_button = self.damageButton(dice_to_roll['dmgdice'], dice_to_roll['dmgbonus'], extradmg, user)
             view.add_item(dmg_button)
-            await interaction.response.send_message(embed=em, view=view)
+            await interaction.response.send_message(file=file, embed=em, view=view)
         else:
             expression = f"{dice_to_roll['dice']}+{dice_to_roll['bonus']}"
             print(dice_to_roll['dice'])
             roll_total = await self.roll_functions.exp_roll(expression)
-            em = Embed(title = f"{dice_to_roll['dice']} + {dice_to_roll['bonus']}\nTotal: {roll_total[2]}", description=f"{roll_total[0]}")
+            stitch_dice_images(roll_total[3], user.id)
+            em = Embed(title = f"{dice_to_roll['dice']} + {dice_to_roll['bonus']}\nTotal: {roll_total[2]}")
             em.set_author(name=f"{user.nick}'s {roll}", icon_url=user.avatar_url)
-            await interaction.response.send_message(embed=em)
+            file = File(f"/Users/robert/Desktop/Bot/assets/{user.id}/stitched_image.png", filename="image.png")
+            em.set_image(url="attachment://image.png")
+            await interaction.response.send_message(file=file, embed=em)
 
     @app_commands.command(name = 'delete_roll', description = 'Delete one of your custom rolls')
     @app_commands.describe(roll = 'The name of the roll to delete')
@@ -126,10 +133,13 @@ class custom_rolls(commands.Cog):
             rolls = result[0]
             bonus = result[1]
             total = result[2]
-
-            em = Embed(title = f'{expression}\n**Total: {total}**', description=rolls)
+            img_array = result[3]
+            stitch_dice_images(img_array, self.user.id)
+            file = File(f"/Users/robert/Desktop/Bot/assets/{self.user.id}/stitched_image.png", filename="image.png")
+            em = Embed(title = f'{expression}\n**Total: {total}**')
             em.set_author(name=f"{self.user.nick}'s Damage", icon_url=self.user.avatar_url)
-            await interaction.response.send_message(embed=em)
+            em.set_image(url="attachment://image.png")
+            await interaction.response.send_message(file=file, embed=em)
 
         async def roll(self, dice: int, sides: int):
             dice_array = []

@@ -1,7 +1,8 @@
 import PIL.Image as Image
 import PIL.ImageOps as ImageOps
+import os
 
-def stitch_dice_images(dice_rolls):
+def stitch_dice_images(dice_rolls, user_id):
     images = []
     for roll in dice_rolls:
         dice_type = roll[1]
@@ -19,6 +20,9 @@ def stitch_dice_images(dice_rolls):
     stitched_image = Image.new("RGBA", (len(images) * 100, 100))
     for i, image in enumerate(images):
         stitched_image.paste(image, (i * 100, 0))
+    
+    user_assets_dir = f"/Users/robert/Desktop/Bot/assets/{user_id}"
+    if not os.path.exists(user_assets_dir):
+        os.makedirs(user_assets_dir)
 
-
-    stitched_image.save("/Users/robert/Desktop/Bot/assets/stitched_image.png")
+    stitched_image.save(f"/Users/robert/Desktop/Bot/assets/{user_id}/stitched_image.png")

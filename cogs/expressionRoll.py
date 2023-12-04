@@ -28,12 +28,12 @@ class expressionRoll(commands.Cog):
         rolls = roll_total[0]
         img_array = roll_total[3]
 
-        stitch_dice_images(img_array)
-
-        em1 = Embed(title=f'{expression}\n**Total: {total}**', description=f'{rolls}')
+        stitch_dice_images(img_array, user.id)
+        print('hmmm')
+        em1 = Embed(title=f'{expression}\n**Total: {total}**')
         em1.set_author(name=f"{user.nick} {rolling}", icon_url=user.avatar_url)
 
-        file = File(f"/Users/robert/Desktop/Bot/assets/stitched_image.png", filename="image.png")
+        file = File(f"/Users/robert/Desktop/Bot/assets/{user.id}/stitched_image.png", filename="image.png")
         em1.set_image(url="attachment://image.png")
         await interaction.response.send_message(file=file, embed=em1)
     
