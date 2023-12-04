@@ -35,7 +35,6 @@ class RollFunctions:
                     small_num = num_str[1]
                     img_array.append([int(big_num), 100])
                     img_array.append([int(small_num), 10])
-                    print(img_array)
                 rolls = np.concatenate((rolls, outcome)).astype(int)
                 print(rolls)
             elif "d" in i:

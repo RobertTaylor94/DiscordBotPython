@@ -29,7 +29,6 @@ class expressionRoll(commands.Cog):
         img_array = roll_total[3]
 
         stitch_dice_images(img_array, user.id)
-        print('hmmm')
         em1 = Embed(title=f'{expression}\n**Total: {total}**')
         em1.set_author(name=f"{user.nick} {rolling}", icon_url=user.avatar_url)
 
