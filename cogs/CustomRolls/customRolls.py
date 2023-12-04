@@ -67,7 +67,7 @@ class custom_rolls(commands.Cog):
         if dice_to_roll['type'] == 'attack':
             attack_role = await self.roll_functions.roll_attack(dice_to_roll['atkbonus'], extraatk)
             stitch_dice_images([[attack_role[0], 20]], user.id)
-            file = File(f"/Users/robert/Desktop/Bot/assets/{user.id}/stitched_image.png", filename="image.png")
+            file = File(f"/Users/robert/Desktop/DiscordBot/assets/{user.id}/stitched_image.png", filename="image.png")
             em = Embed(title = f"{dice_to_roll['atkdice']} + {dice_to_roll['atkbonus']}\nTotal: {attack_role[1]}")
             em.set_author(name=f"{user.nick}'s {roll}", icon_url=user.avatar_url)
             em.set_image(url="attachment://image.png")
@@ -82,7 +82,7 @@ class custom_rolls(commands.Cog):
             stitch_dice_images(roll_total[3], user.id)
             em = Embed(title = f"{dice_to_roll['dice']} + {dice_to_roll['bonus']}\nTotal: {roll_total[2]}")
             em.set_author(name=f"{user.nick}'s {roll}", icon_url=user.avatar_url)
-            file = File(f"/Users/robert/Desktop/Bot/assets/{user.id}/stitched_image.png", filename="image.png")
+            file = File(f"/Users/robert/Desktop/DiscordBot/assets/{user.id}/stitched_image.png", filename="image.png")
             em.set_image(url="attachment://image.png")
             await interaction.response.send_message(file=file, embed=em)
 
@@ -135,7 +135,7 @@ class custom_rolls(commands.Cog):
             total = result[2]
             img_array = result[3]
             stitch_dice_images(img_array, self.user.id)
-            file = File(f"/Users/robert/Desktop/Bot/assets/{self.user.id}/stitched_image.png", filename="image.png")
+            file = File(f"/Users/robert/Desktop/DiscordBot/assets/{self.user.id}/stitched_image.png", filename="image.png")
             em = Embed(title = f'{expression}\n**Total: {total}**')
             em.set_author(name=f"{self.user.nick}'s Damage", icon_url=self.user.avatar_url)
             em.set_image(url="attachment://image.png")

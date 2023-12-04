@@ -22,7 +22,7 @@ class expressionRoll(commands.Cog):
             rolling = ""
 
         roll_total = await self.roll_functions.exp_roll(expression)
-
+        print(roll_total)
         total = roll_total[2]
         bonus = roll_total[1]
         rolls = roll_total[0]
@@ -32,7 +32,7 @@ class expressionRoll(commands.Cog):
         em1 = Embed(title=f'{expression}\n**Total: {total}**')
         em1.set_author(name=f"{user.nick} {rolling}", icon_url=user.avatar_url)
 
-        file = File(f"/Users/robert/Desktop/Bot/assets/{user.id}/stitched_image.png", filename="image.png")
+        file = File(f"/Users/robert/Desktop/DiscordBot/assets/{user.id}/stitched_image.png", filename="image.png")
         em1.set_image(url="attachment://image.png")
         await interaction.response.send_message(file=file, embed=em1)
     
