@@ -6,7 +6,6 @@ class UserData():
 
     def get_user(self):
         id = self.interaction.user.id
-        print(id)
         if id == 552625879725899789: # JN
             color = c.red()
         elif id == 464817930484449281: # FW
