@@ -23,16 +23,33 @@ class custom_rolls(commands.Cog):
         custom_rolls = await self.get_custom_rolls()
         player_rolls = custom_rolls[str(interaction.user.id)]
         roll_type = type
-        em = Embed(title = "New Role")
 
         if roll_type == 'attack':
             new_role = {'name': name, 'atkbonus': atkbonus, 'dmgdice': dmgdice, 'dmgbonus': dmgbonus, 'atkdice': atkdice, 'type': type}
             player_rolls.append(new_role)
+            em = Embed(title = "New Role")
             em.add_field(name = name, value = f'Attack Bonus: {atkbonus}\nDamage: {dmgdice} + {dmgbonus}\nType: {type}')
-        if roll_type == 'other':
-            new_role = {'name': name, 'dice': dice, 'bonus': bonus, 'type': type}
-            player_rolls.append(new_role)
-            em.add_field(name = name, value = f'Roll: {dice} + {bonus}')
+        # if roll_type == 'other':
+        #     new_role = {'name': name, 'dice': dice, 'bonus': bonus, 'type': type}
+        #     player_rolls.append(new_role)
+        #     em.add_field(name = name, value = f'Roll: {dice} + {bonus}')
+
+        if roll_type == "other":
+            new_role = {"name": name, "dice": dice, "bonus": bonus, "type": type}
+            # Check if a roll with the same name exists
+            found = False
+            for i, existing_role in enumerate(player_rolls):
+                if existing_role["name"] == new_role["name"]:
+                    player_rolls[i] = new_role  # Overwrite
+                    found = True
+                    em = Embed(title = "Updated Role")
+                    em.add_field(name = name, value = f'Roll: {dice} + {bonus}')
+                    break  # No need to search further
+
+            if not found:
+                player_rolls.append(new_role)  # Append if not found
+                em = Embed(title = "New Role")
+                em.add_field(name = name, value = f'Roll: {dice} + {bonus}')
 
         custom_rolls[str(interaction.user.id)] = player_rolls
         await self.save_rolls(custom_rolls)
@@ -74,7 +91,7 @@ class custom_rolls(commands.Cog):
             view = View()
             dmg_button = self.damageButton(dice_to_roll['dmgdice'], dice_to_roll['dmgbonus'], extradmg, user)
             view.add_item(dmg_button)
-            await interaction.response.send_message(file=file, embed=em, view=view)
+            await interaction.response.send_message(file=file, embed=em, view=view, silent=True)
         else:
             expression = f"{dice_to_roll['dice']}+{dice_to_roll['bonus']}"
             print(dice_to_roll['dice'])
@@ -84,7 +101,7 @@ class custom_rolls(commands.Cog):
             em.set_author(name=f"{user.nick}'s {roll}", icon_url=user.avatar_url)
             file = File(f"/Users/robert/Desktop/DiscordBot/assets/{user.id}/stitched_image.png", filename="image.png")
             em.set_image(url="attachment://image.png")
-            await interaction.response.send_message(file=file, embed=em)
+            await interaction.response.send_message(file=file, embed=em, silent=True)
 
     @app_commands.command(name = 'delete_roll', description = 'Delete one of your custom rolls')
     @app_commands.describe(roll = 'The name of the roll to delete')
@@ -101,9 +118,9 @@ class custom_rolls(commands.Cog):
             for i, item in enumerate(player_rolls):
                 if player_rolls[i]['name'] == deleted_roll:
                     del player_rolls[i]
-            await interaction.response.send_message(f"{deleted_roll} removed.")
+            await interaction.response.send_message(f"{deleted_roll} removed.", silent=True)
         else:
-            await interaction.response.send_message("roll not found")
+            await interaction.response.send_message("roll not found", silent=True)
 
         custom_rolls[str(interaction.user.id)] = player_rolls
         await self.save_rolls(custom_rolls)
@@ -113,7 +130,7 @@ class custom_rolls(commands.Cog):
         with open('customRolls.json', 'r') as f:
             customRolls = json.load(f)
             return customRolls
-        
+
     async def save_rolls(self, file):
         with open('customRolls.json', 'w') as f:
             json.dump(file, f)
@@ -139,7 +156,7 @@ class custom_rolls(commands.Cog):
             em = Embed(title = f'{self.dmgdice} + {self.dmgbonus} {f"+ {self.extradmg}" if self.extradmg != 0 else ""}\n**Total: {total}**', color=self.user.color)
             em.set_author(name=f"{self.user.nick}'s Damage", icon_url=self.user.avatar_url)
             em.set_image(url="attachment://image.png")
-            await interaction.response.send_message(file=file, embed=em)
+            await interaction.response.send_message(file=file, embed=em, silent=True)
 
         async def roll(self, dice: int, sides: int):
             dice_array = []
@@ -147,6 +164,6 @@ class custom_rolls(commands.Cog):
                 rand_num = random.randint(1, sides)
                 dice_array.append(rand_num)
             return dice_array
-                    
+
 async def setup(bot):
     await bot.add_cog(custom_rolls(bot))
