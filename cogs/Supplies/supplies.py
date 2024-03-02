@@ -21,7 +21,7 @@ class supplies(commands.Cog):
         embed = Embed(type='rich', title='Ship Supplies')
         embed.add_field(name='Food', value=food_amt)
         embed.add_field(name='Drink', value=drink_amt)
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, silent=True)
 
     @app_commands.command(name='update_supplies', description='Add food and drink to the rations')
     @app_commands.describe(food='food', drink='drink')
@@ -42,7 +42,7 @@ class supplies(commands.Cog):
         embed = Embed(title='Updated Supplies')
         embed.add_field(name='Food', value=supplies[str('food')])
         embed.add_field(name='Drink', value=supplies[str('drink')])
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, silent=True)
 
     async def set_supplies(self):
         supplies = await self.get_supplies()

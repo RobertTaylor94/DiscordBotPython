@@ -33,7 +33,7 @@ class expressionRoll(commands.Cog):
 
         file = File(f"/Users/robert/Desktop/DiscordBot/assets/{user.id}/stitched_image.png", filename="image.png")
         em1.set_image(url="attachment://image.png")
-        await interaction.response.send_message(file=file, embed=em1)
+        await interaction.response.send_message(file=file, embed=em1, silent=True)
     
 async def setup(bot):
     await bot.add_cog(expressionRoll(bot))

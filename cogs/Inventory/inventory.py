@@ -26,7 +26,7 @@ class inventory(commands.Cog):
                 desc = item['description']
                 em.add_field(name=item_name, value=desc)
         
-        await interaction.response.send_message(embed=em, ephemeral = True)
+        await interaction.response.send_message(embed=em, ephemeral = True, silent=True)
             
     @app_commands.command(name='add_inventory', description='Add an item to your inventory')
     @app_commands.describe(name='name', description='description')
@@ -45,7 +45,7 @@ class inventory(commands.Cog):
         em = Embed(title=f'{interaction.user.nick}')
         em.add_field(name=new_item['Name'], value=new_item['description'])
 
-        await interaction.response.send_message(embed = em, ephemeral = True)
+        await interaction.response.send_message(embed = em, ephemeral = True, silent=True)
 
     @app_commands.command(name='delete', description='Remove an item from your inventory')
     @app_commands.describe(item='item')
@@ -71,7 +71,7 @@ class inventory(commands.Cog):
                 desc = item['description']
                 em.add_field(name=item_name, value=desc)
 
-        await interaction.response.send_message(embed = em, ephemeral = True)
+        await interaction.response.send_message(embed = em, ephemeral = True, silent=True)
 
     async def get_inventory(self):
         print('get inventory called')
