@@ -26,6 +26,8 @@ class RollFunctions:
         for i in array:
             if "d100" in i:
                 roll_array = i.split("d")
+                if roll_array[0] == "":
+                    roll_array.insert(0, "1")
                 dice = int(roll_array[0])
                 sides = int(roll_array[1])
                 outcome = await self.roll(dice, sides)
@@ -39,6 +41,8 @@ class RollFunctions:
                 print(rolls)
             elif "d" in i:
                 roll_array = i.split("d")
+                if roll_array[0] == "":
+                    roll_array[0] = "1"
                 dice = int(roll_array[0])
                 sides = int(roll_array[1])
                 outcome = await self.roll(dice, sides)
