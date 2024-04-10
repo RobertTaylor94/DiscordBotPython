@@ -5,6 +5,8 @@ import numpy as np
 from functions.roll import RollFunctions
 from functions.user_data import UserData
 from functions.get_dice_img import stitch_dice_images
+from functions.get_embed_file import get_embed_file
+import os
 
 class expressionRoll(commands.Cog):
     def __init__(self, bot):
@@ -30,12 +32,10 @@ class expressionRoll(commands.Cog):
         stitch_dice_images(img_array, user.id)
         em1 = Embed(title=f'{expression}\n**Total: {total}**', color=user.color)
         em1.set_author(name=f"{user.nick} {rolling}", icon_url=user.avatar_url)
+        file = get_embed_file(user.id)
 
-        file = File(f"/Users/robert/Desktop/DiscordBot/assets/{user.id}/stitched_image.png", filename="image.png")
         em1.set_image(url="attachment://image.png")
         await interaction.response.send_message(file=file, embed=em1, silent=True)
     
 async def setup(bot):
     await bot.add_cog(expressionRoll(bot))
-
-
