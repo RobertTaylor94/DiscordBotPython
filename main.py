@@ -15,26 +15,13 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
 
 async def load():
-    # for filename in os.listdir('./cogs'):
-    #     if filename.endswith('.py'):
-    #         await bot.load_extension(f'cogs.{filename[:-3]}')
-    # for filename in os.listdir('./cogs/Supplies'):
-    #     if filename.endswith('.py'):
-    #         await bot.load_extension(f'cogs.Supplies.{filename[:-3]}')
-    # os.chdir('../../')
-    # for filename in os.listdir('./cogs/Inventory'):
-    #     if filename.endswith('.py'):
-    #         await bot.load_extension(f'cogs.Inventory.{filename[:-3]}')
-    # os.chdir('../../')
-    # for filename in os.listdir('./cogs/CustomRolls'):
-    #     if filename.endswith('.py'):
-    #         await bot.load_extension(f'cogs.CustomRolls.{filename[:-3]}')
     project_root = os.path.abspath(os.path.dirname(__file__))
     cogs_path = os.path.join(project_root, "cogs")
 
     for filename in os.listdir(cogs_path):
         if filename.endswith('.py'):
             extension_path = f'cogs.{filename[:-3]}'
+            await bot.load_extension(extension_path)
             print(f'added {filename}')
 
     for subdir in os.listdir(cogs_path):
@@ -48,7 +35,6 @@ async def load():
 
 async def main():
     await load()
-    print("loaded all extensions")
     await bot.start(TOKEN)
 
 asyncio.run(main())
