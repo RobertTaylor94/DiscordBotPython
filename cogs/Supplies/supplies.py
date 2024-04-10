@@ -3,7 +3,9 @@ from discord import app_commands, Embed, Interaction
 import json
 import os 
 
-os.chdir('cogs/Supplies')
+# os.chdir('cogs/Supplies')
+dir_root = os.path.abspath(os.path.dirname(__file__))
+os.chdir(dir_root)
 
 class supplies(commands.Cog):
     def __init__(self, bot):

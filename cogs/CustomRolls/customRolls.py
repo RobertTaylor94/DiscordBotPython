@@ -11,7 +11,9 @@ import os
 import random
 import numpy as np
 
-os.chdir('cogs/CustomRolls')
+# os.chdir('cogs/CustomRolls')
+dir_root = os.path.abspath(os.path.dirname(__file__))
+os.chdir(dir_root)
 
 class custom_rolls(commands.Cog):
     def __init__(self, bot):
